@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+#import modules from flask:
+#   Flask - used to create a Flask instance
+#   request - used to interact with APIs, to access incoming request data
+#   render_template - enables the reference and use of external HTML code or scripts
+#   make_response - sets additional headers in a view
 from flask import Flask, request, render_template, make_response
 import random
 from urllib.parse import quote_plus
