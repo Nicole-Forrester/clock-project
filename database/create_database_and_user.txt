@@ -1,3 +1,10 @@
 # Log in to mongosh as root
 
-use clock_database
+use clocks_database
+db.createUser(
+  {
+    user: "nicoleforrester",
+    pwd:  "wibblywobblytimeywimeystuff",
+    roles: [ { role: "readWrite", db: "clocks_database" }]
+  }
+)

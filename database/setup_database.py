@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 from pymongo import MongoClient
 import pandas as pd
+from pathlib import Path
+from urllib.parse import quote_plus
+import json
 
 def parse_data(filename):
     # Use pandas to load the csv file/excel spread sheet to a dataframe
@@ -15,11 +18,21 @@ def parse_data(filename):
     return data
 
 
-
 def main():
     # Set up the database connection
+    with open(Path(__file__).parent.parent / "configuration/conf.json") as infh:
+        conf = json.loads(infh.read())
 
-    client = MongoClient("mongodb://localhost:27017/")
+    print("Server",quote_plus(conf['server']['address']))
+    print("Username",quote_plus(conf['server']['username']))
+    print("Password",quote_plus(conf['server']['password']))
+
+    client = MongoClient(
+        conf['server']['address'],
+        username = conf['server']['username'],
+        password = conf['server']['password'],
+        authSource = "clocks_database"
+    )
     db = client.clocks_database
 
     # Create a collection for the clocks called "clocks"
