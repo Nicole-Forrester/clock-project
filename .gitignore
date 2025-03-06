@@ -4,6 +4,9 @@ Data/
 # Conf file
 configuration/conf.json
 
+# Database and user creation file
+database/create_database_and_user.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
