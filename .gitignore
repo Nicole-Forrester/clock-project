@@ -1,8 +1,8 @@
-# Data
-Data/
-
 # Conf file
 configuration/conf.json
+
+# Data
+data/
 
 # Database and user creation file
 database/create_database_and_user.txt
