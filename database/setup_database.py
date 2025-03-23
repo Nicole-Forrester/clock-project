@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pymongo import MongoClient
 import pandas as pd
+import numpy as np
 from pathlib import Path
 from urllib.parse import quote_plus
 import json
@@ -9,6 +10,9 @@ def parse_data(filename):
     # Use pandas to load the csv file/excel spread sheet to a dataframe
     df = pd.read_csv(filename)
     print(df.head())
+
+     # Replace NaN values with None (translates to null in MongoDB) to avoid parser errors in MongoDB
+    df = df.replace({np.nan: None})
 
     # "Jsonify"/convert dataframe to a dict
     data = df.to_dict(orient = "records")

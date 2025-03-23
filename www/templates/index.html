@@ -4,32 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clock Database</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin: 5px auto;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<div class="container-fluid text-center">
-  <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="25%">
-</div>
-<body>
 
-    <h1 style="text-align: center;">Epigenetic Clock Database</h1>
+    <!-- load CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- jQuery and DataTables JS (required for DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
+    <!-- load JS file -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <div class="container-fluid text-center">
+        <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="15%">
+      </div>
     
-    <table>
+    <h1 style="text-align: center;">Epigenetic Clock Database</h1>
+</head>
+<body>  
+    <table id="clockTable" class="display"> <!-- display is short-hand for stripe, hover, row-border and order-column classes -->
         <thead>
             <tr>
                 <th>Clock</th>
@@ -48,27 +42,7 @@
                 <th>URL</th>            
             </tr>
         </thead>
-        <tbody>
-            {% for item in data %}
-            <tr>
-                <td>{{ item.clock }}</td>
-                <td>{{ item.training_data_type }}</td>
-                <td>{{ item.species }}</td>
-                <td>{{ item.training_species }}</td>
-                <td>{{ item.training_age_range }}</td>
-                <td>{{ item.mad_years }}</td>
-                <td>{{ item.num_cpgs }}</td>
-                <td>{{ item.genome_build }}</td>
-                <td>{{ item.method }}</td>
-                <td>{{ item.cpg_locs }}</td>
-                <td>{{ item.language }}</td>
-                <td>{{ item.code }}</td>
-                <td>{{ item.paper }}</td>
-                <td>{{ item.url }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tbody></tbody>
     </table>
-
 </body>
 </html>

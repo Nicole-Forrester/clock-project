@@ -9,18 +9,14 @@ from flask import Flask, request, render_template, make_response, jsonify
 from pymongo import MongoClient
 from pathlib import Path
 import json
+import numpy as np
 
 # Create instance of Flask class, assign to app
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    # Pull data from the database
-
-    global clock_data
-    clock_data = clocks.find()
-
-    return render_template("index.html", data=clock_data)
+    return render_template("index.html")
 
 
 def get_server_configuration():
@@ -34,6 +30,20 @@ def connect_to_database(conf):
 
     global clocks
     clocks = db.clocks_collection
+
+@app.route("/data", methods=["GET"])
+def get_data():
+    # Fetch all records from MongoDB
+    clock_data = clocks.find({}, {"_id": 0})
+
+    # Convert Mongo cursor to list of dictionaries and handle None values
+    clean_data = []
+    for item in clock_data:
+        clean_item = {key: ("" if value is None else value) for key, value in item.items()}
+        clean_data.append(clean_item)
+
+    # Return the data in a format DataTables expects
+    return jsonify({"data": clean_data})
 
 
 # Don't need now but might need later
