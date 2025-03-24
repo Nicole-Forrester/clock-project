@@ -45,6 +45,13 @@ def get_data():
     # Return the data in a format DataTables expects
     return jsonify({"data": clean_data})
 
+@app.route("/clock/<clock_name>")
+def clock_page(clock_name):
+  # Find the specific clock in MongoDB
+  clock = clocks.find_one({"clock": clock_name}, {"_id": 0})
+  
+  return render_template("clock_page.html", clock_name=clock_name, clock=clock)
+
 
 # Don't need now but might need later
 def get_form():

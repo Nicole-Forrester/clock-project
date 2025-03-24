@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- load CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <title>{{ clock_name }} Clock Information</title>
+
+    <div class="container-fluid text-center">
+        <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="15%">
+      </div>
+    
+    <h1 style="text-align: center;">{{ clock_name }} Clock</h1>
+    </head>
+    <body>
+        <div>
+            <p><strong>Clock Name:</strong> {{ clock.clock }}</p>
+            <p><strong>Paper:</strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></p>
+            <p><strong>Data Type:</strong> {{ clock.training_data_type }}</p>
+            <p><strong>Species:</strong> {{ clock.species }}</p>
+            <p><strong>Tissue(s) used in training:</strong> {{ clock.training_tissue }}</p>
+            <p><strong>Age range in years (training):</strong> {{ clock.training_age_range }}</p>
+            <p><strong>Number of CpGs:</strong> {{ clock.num_cpgs }}</p>
+            <p><strong>Genome Build:</strong> {{ clock.genome_build }}</p>
+            <p><strong>Language:</strong> {{ clock.language }}</p>
+            <p><strong>Code:</strong> {{ clock.code }}</p>
+        </div>
+        <br><br>
+        <a href="{{ url_for('index') }}">Back to Clock Database</a>
+    </body>
+</html>
