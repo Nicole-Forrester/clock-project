@@ -3,11 +3,7 @@ $( document ).ready(function() {
         ajax: '/data', // Fetch data from Flask
         responsive: true, // Make the table responsive
         columns: [
-            { data: 'clock' ,
-                render: function(data) {
-                    return `<a href="/clock/${encodeURIComponent(data)}">${data}</a>`;
-                }
-            },
+            { data: 'clock' },
             { data: 'training_data_type' },
             { data: 'species' },
             { data: 'training_tissue',
@@ -44,5 +40,12 @@ $( document ).ready(function() {
             { width: "25%", "targets": 3 },  // Tissues column
             { width: "20%", "targets": 4 },  // Paper column
         ],
+        rowCallback: function (row, data) {
+            // Add click event to each row
+            $(row).css('cursor', 'pointer');  // Change cursor to pointer to indicate clickable row
+            $(row).on('click', function () {
+                window.location.href = `/clock/${encodeURIComponent(data.clock)}`;
+            });
+        }
     });
 });
