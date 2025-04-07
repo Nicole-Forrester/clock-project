@@ -12,9 +12,15 @@ $( document ).ready(function() {
                     if (data.includes(',')) {
                         // Split the string by commas to count the tissues
                         const tissues = data.split(',').map(tissue => tissue.trim()); // Remove any leading or trailing spaces from each tissue name after splitting
-                        return `${tissues[0]} and ${tissues.length - 1} other tissues` // Show count of tissues
+                        const tooltip = tissues.join(', ');  // Full list of tissues
+                        return `
+                            <span class="tooltip-container">
+                                ${tissues[0]} and ${tissues.length - 1} other tissues
+                                <span class="tooltip-text">${tooltip}</span>
+                            </span>
+                        `;
                     } else {
-                        return data; // Show the single tissue name
+                        return data; // Show the single tissue name, no tooltip
                     }
                 }
             },

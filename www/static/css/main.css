@@ -50,6 +50,39 @@ a:visited {
     color: blue;
 }
 
+/* Tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: help;
+}
+
+/* Tooltip text */
+.tooltip-container .tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%; /* Position above the element */
+    left: 50%;
+    transform: translateX(-50%); /* Appears in middle of screen instead of off end */
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+/* Show tooltip instantly on hover */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1; /* makes it appear faster than default tooltip, which takes 2 seconds of hovering */
+}
+
 /* Pagination, Search box, and Info text - not used
 .dataTables_wrapper {
     font-size: 0.9rem;
