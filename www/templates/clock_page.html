@@ -18,22 +18,14 @@
     <h1 style="text-align: center;">{{ clock_name }} Clock</h1>
     </head>
     <body>
-        <div style="padding: 0px 120px">
-            <table id="indvTable" style="border-collapse: collapse">
-                <colgroup>
-                    <col span="1" style="width: 20%;">
-                    <col span="1" style="width: 80%;">
-                 </colgroup>
-                 <tr>
-                    <th></th>
-                    <th>Details</th>
-                </tr>
-                <tr>
-                    <th style="text-align: left;">Clock Name</th>
+        <div>
+            <table id="indvTable" style="border-collapse: collapse; margin: auto">
+                <!-- <tr>
+                    <th style="text-align: left; width: 20%;">Clock Name</th>
                     <td>{{ clock.clock }}</td>
-                </tr>
+                </tr> -->
                 <tr>
-                    <th style="text-align: left;">Paper</th>
+                    <th style="text-align: left; width: 20%;">Paper</th>
                     <td></strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></td>
                 </tr>
                 <tr>
@@ -54,7 +46,7 @@
                 </tr>
                 <tr>
                     <th style="text-align: left;">Number of CpGs</th>
-                    <td></strong> {{ clock.num_cpgs }}</td>
+                    <td></strong> {{ clock.num_cpgs | int }}</td> <!-- make the number an integer to avoid ".0" being added to each number -->
                 </tr>
                 <tr>
                     <th style="text-align: left;">Genome Build</th>
