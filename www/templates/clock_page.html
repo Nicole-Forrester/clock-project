@@ -11,7 +11,9 @@
     <title>{{ clock_name }} Clock Information</title>
 
     <div class="container-fluid text-center">
-        <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" width="8%">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" width="8%">
+        </a>
         <img align="right" src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="17%">
       </div>
     
@@ -19,45 +21,41 @@
     </head>
     <body>
         <div>
-            <table id="indvTable" style="border-collapse: collapse; margin: auto">
-                <!-- <tr>
-                    <th style="text-align: left; width: 20%;">Clock Name</th>
-                    <td>{{ clock.clock }}</td>
-                </tr> -->
+            <table id="indvTable" style="border-collapse: collapse; margin: 50px auto">
                 <tr>
-                    <th style="text-align: left; width: 20%;">Paper</th>
+                    <th>Paper</th>
                     <td></strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Species</th>
+                    <th>Species</th>
                     <td></strong> {{ clock.species }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Data Type</th>
+                    <th>Data Type</th>
                     <td></strong> {{ clock.training_data_type }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Tissue(s) Used in Training</th>
+                    <th>Tissue(s) Used in Training</th>
                     <td></strong> {{ clock.training_tissue }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Age Range (Training)</th>
+                    <th>Age Range (Training)</th>
                     <td></strong> {{ clock.training_age_range }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Number of CpGs</th>
+                    <th>Number of CpGs</th>
                     <td></strong> {{ clock.num_cpgs | int }}</td> <!-- make the number an integer to avoid ".0" being added to each number -->
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Genome Build</th>
+                    <th>Genome Build</th>
                     <td></strong> {{ clock.genome_build }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Language</th>
+                    <th>Language</th>
                     <td></strong> {{ clock.language }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left;">Code</th>
+                    <th>Code</th>
                     <td></strong> <a href="{{ clock.code }}">{{ clock.code }}></a></td>
                 </tr>
             </table>
@@ -74,7 +72,8 @@
             <p><strong>Language:</strong> {{ clock.language }}</p>
             <p><strong>Code:</strong> <a href="{{ clock.code }}">{{ clock.code }}></a></p>
         </div> -->
-        <br><br>
-        <a href="{{ url_for('index') }}">Back to Clock Database</a>
+        <p style="margin-left: 7.5%">
+            <a href="{{ url_for('index') }}">Back to Clock Database</a>
+        </p>
     </body>
 </html>

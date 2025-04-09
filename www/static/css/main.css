@@ -84,9 +84,17 @@ a:visited {
 }
 
 /* indvTable styling */
+#indvTable {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 85%
+}
 #indvTable td, #indvTable th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 8px 10px;
+    text-align: left;
+}
+#indvTable th {
+    width: 20%;
 }
 
 /* Pagination, Search box, and Info text - not used
