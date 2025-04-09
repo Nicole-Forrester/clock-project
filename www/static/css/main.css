@@ -83,6 +83,12 @@ a:visited {
     opacity: 1; /* makes it appear faster than default tooltip, which takes 2 seconds of hovering */
 }
 
+/* indvTable styling */
+#indvTable td, #indvTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
 /* Pagination, Search box, and Info text - not used
 .dataTables_wrapper {
     font-size: 0.9rem;

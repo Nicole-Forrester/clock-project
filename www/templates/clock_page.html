@@ -18,7 +18,59 @@
     <h1 style="text-align: center;">{{ clock_name }} Clock</h1>
     </head>
     <body>
-        <div>
+        <div style="padding: 0px 120px">
+            <table id="indvTable" style="border-collapse: collapse">
+                <colgroup>
+                    <col span="1" style="width: 20%;">
+                    <col span="1" style="width: 80%;">
+                 </colgroup>
+                 <tr>
+                    <th></th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Clock Name</th>
+                    <td>{{ clock.clock }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Paper</th>
+                    <td></strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Species</th>
+                    <td></strong> {{ clock.species }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Data Type</th>
+                    <td></strong> {{ clock.training_data_type }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Tissue(s) Used in Training</th>
+                    <td></strong> {{ clock.training_tissue }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Age Range (Training)</th>
+                    <td></strong> {{ clock.training_age_range }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Number of CpGs</th>
+                    <td></strong> {{ clock.num_cpgs }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Genome Build</th>
+                    <td></strong> {{ clock.genome_build }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Language</th>
+                    <td></strong> {{ clock.language }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left;">Code</th>
+                    <td></strong> <a href="{{ clock.code }}">{{ clock.code }}></a></td>
+                </tr>
+            </table>
+        </div>
+        <!-- <div>
             <p><strong>Clock Name:</strong> {{ clock.clock }}</p>
             <p><strong>Paper:</strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></p>
             <p><strong>Data Type:</strong> {{ clock.training_data_type }}</p>
@@ -28,8 +80,8 @@
             <p><strong>Number of CpGs:</strong> {{ clock.num_cpgs }}</p>
             <p><strong>Genome Build:</strong> {{ clock.genome_build }}</p>
             <p><strong>Language:</strong> {{ clock.language }}</p>
-            <p><strong>Code:</strong> {{ clock.code }}</p>
-        </div>
+            <p><strong>Code:</strong> <a href="{{ clock.code }}">{{ clock.code }}></a></p>
+        </div> -->
         <br><br>
         <a href="{{ url_for('index') }}">Back to Clock Database</a>
     </body>
