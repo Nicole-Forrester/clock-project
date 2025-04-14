@@ -40,10 +40,10 @@ $( document ).ready(function() {
         order: [],  // Disable initial ordering - don't want clocks to be ordered alphabetically by default
         autoWidth: false, // Prevent automatic resizing
         columnDefs: [
-            { width: "15%", "targets": 0 },  // Clock name column
-            { width: "25%", "targets": 1 },  // Data type column
-            { width: "15%", "targets": 2 },  // Species column
-            { width: "25%", "targets": 3 },  // Tissues column
+            { width: "18%", "targets": 0 },  // Clock name column
+            { width: "22%", "targets": 1 },  // Data type column
+            { width: "16%", "targets": 2 },  // Species column
+            { width: "24%", "targets": 3 },  // Tissues column
             { width: "20%", "targets": 4 },  // Paper column
         ],
         rowCallback: function (row, data) {

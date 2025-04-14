@@ -24,39 +24,43 @@
             <table id="indvTable" style="border-collapse: collapse; margin: 50px auto">
                 <tr>
                     <th>Paper</th>
-                    <td></strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></td>
+                    <td><a href="{{ clock.url }}">{{ clock.paper }}</a></td>
                 </tr>
                 <tr>
                     <th>Species</th>
-                    <td></strong> {{ clock.species }}</td>
+                    <td>{{ clock.species }}</td>
                 </tr>
                 <tr>
                     <th>Data Type</th>
-                    <td></strong> {{ clock.training_data_type }}</td>
+                    <td>{{ clock.training_data_type }}</td>
                 </tr>
                 <tr>
                     <th>Tissue(s) Used in Training</th>
-                    <td></strong> {{ clock.training_tissue }}</td>
+                    <td>{{ clock.training_tissue }}</td>
                 </tr>
                 <tr>
                     <th>Age Range (Training)</th>
-                    <td></strong> {{ clock.training_age_range }}</td>
+                    <td>{{ clock.training_age_range }}</td>
                 </tr>
                 <tr>
                     <th>Number of CpGs</th>
-                    <td></strong> {{ clock.num_cpgs | int }}</td> <!-- make the number an integer to avoid ".0" being added to each number -->
+                    <td>{{ clock.num_cpgs | int }}</td> <!-- make the number an integer to avoid ".0" being added to each number -->
                 </tr>
                 <tr>
                     <th>Genome Build</th>
-                    <td></strong> {{ clock.genome_build }}</td>
+                    <td>{{ clock.genome_build }}</td>
                 </tr>
                 <tr>
                     <th>Language</th>
-                    <td></strong> {{ clock.language }}</td>
+                    <td>{{ clock.language }}</td>
                 </tr>
                 <tr>
                     <th>Code</th>
-                    <td></strong> <a href="{{ clock.code }}">{{ clock.code }}></a></td>
+                    {% if clock.code == "Not open source" %}
+                    <td>Not open source</td>
+                    {% elif clock.code %}
+                    <td><a href="{{ clock.code }}">{{ clock.code }}></a></td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
