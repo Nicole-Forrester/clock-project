@@ -4,7 +4,8 @@ $( document ).ready(function() {
         responsive: true, // Make the table responsive
         columns: [
             { data: 'clock' },
-            { data: 'training_data_type' },
+            { data: 'paper' },
+            { data: 'num_cpgs' },
             { data: 'species' },
             { data: 'training_tissue',
                 render: function (data) {
@@ -24,11 +25,10 @@ $( document ).ready(function() {
                     }
                 }
             },
-            { data: 'paper' },
+            { data: 'training_data_type' },
             { data: 'training_tissue_dup', visible: false },
             { data: 'training_age_range', visible: false },
             { data: 'mad_years', visible: false },
-            { data: 'num_cpgs', visible: false },
             { data: 'genome_build', visible: false },
             { data: 'method', visible: false },
             { data: 'cpg_locs', visible: false },
@@ -40,11 +40,13 @@ $( document ).ready(function() {
         order: [],  // Disable initial ordering - don't want clocks to be ordered alphabetically by default
         autoWidth: false, // Prevent automatic resizing
         columnDefs: [
-            { width: "18%", "targets": 0 },  // Clock name column
-            { width: "22%", "targets": 1 },  // Data type column
-            { width: "16%", "targets": 2 },  // Species column
-            { width: "24%", "targets": 3 },  // Tissues column
-            { width: "20%", "targets": 4 },  // Paper column
+            { width: "16%", "targets": 0 },  // Clock name column
+            { width: "16%", "targets": 1 },  // Paper column
+            { width: "8%", "targets": 2 }, // Num CpGs column
+            { width: "15%", "targets": 3 },  // Species column
+            { width: "23%", "targets": 4 },  // Tissues column
+            { width: "20%", "targets": 5 },  // Data type column
+
         ],
         rowCallback: function (row, data) {
             // Add click event to each row

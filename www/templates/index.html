@@ -1,54 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en-GB">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- load CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <!-- load CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-    <!-- jQuery and DataTables JS (required for DataTables) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+        <!-- jQuery and DataTables JS (required for DataTables) -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 
-    <!-- load JS file -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <!-- load JS file -->
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-    <title>Clock Database</title>
+        <title>Clock Database</title>
+    </head>
+    <body>
+        <div class="header-bar">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
+            </a>
+            <h1 class="header-title">Epigenetic Clock Database</h1>
+            <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
+        </div>
+        
+        <div class="topnav">
+            <a class="active" href="/">Home</a>
+            <a href="runclocks">Run Clocks</a>
+        </div>
 
-    <div class="container-fluid text-center">
-        <a href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" width="8%">
-        </a>
-        <img align="right" src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="17%">
-      </div>
-    
-    <h1 style="text-align: center;">Epigenetic Clock Database</h1>
-</head>
-<body>  
-    <table id="clockTable" class="display"> <!-- display is short-hand for stripe, hover, row-border and order-column classes -->
-        <thead>
-            <tr>
-                <th>Clock</th>
-                <th>Data type used in training</th>
-                <th>Species</th>
-                <th>Tissues used in training</th>
-                <th>Paper</th>
-                <!-- <th>Age range in years (training)</th>
-                <th>Mean absolute deviance (years)</th>
-                <th># of CpGs</th>
-                <th>Genome build</th>
-                <th>Method</th>
-                <th>Got CpG locations?</th>
-                <th>Language</th>
-                <th>Code</th> -->
+        <table id="clockTable" class="display"> <!-- display is short-hand for stripe, hover, row-border and order-column classes -->
+            <thead>
+                <tr>
+                    <th>Clock</th>
+                    <th>Paper</th>
+                    <th>CpGs</th>
+                    <th>Species</th>
+                    <th>Tissues used in training</th>
+                    <th>Data type used in training</th>
+                    <!-- <th>Age range in years (training)</th>
+                    <th>Mean absolute deviance (years)</th>
+                    <th># of CpGs</th>
+                    <th>Genome build</th>
+                    <th>Method</th>
+                    <th>Got CpG locations?</th>
+                    <th>Language</th>
+                    <th>Code</th> -->
 
-                <!-- <th>URL</th>             -->
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</body>
+                    <!-- <th>URL</th>             -->
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </body>
 </html>

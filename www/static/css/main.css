@@ -1,13 +1,72 @@
-/* Apply a custom font */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', sans-serif; /* Apply a custom font */
     background-color: #f8f9fa;
     color: #212529;
+    margin: 0px; /* To avoid navbar from having a gap on the left */
+}
+
+main {
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 /* Apply header 1 font */
 h1 {
-    font-size: 300%
+    font-size: 300%;
+    text-align: center;
+    margin-top: 0;
+}
+
+/* Nav bar formatting */
+.topnav {
+    list-style-type: none;
+    background-color: #003366;
+    color: white;
+    font-size: 120%;
+    padding: 0px;
+    margin-left: 0px;
+    overflow: hidden;
+    width: 100%;
+}
+.topnav a {
+    float: left;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    text-align: center;
+}
+.topnav a:hover {
+    background-color: #00264c;
+}
+.topnav a:visited {
+    color: white;
+}
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.header-logo {
+    max-height:110px;
+}
+
+.left-logo {
+    width: 100%;
+}
+
+.right-logo {
+    width: 17%;
+}
+
+.header-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 300%;
+    margin: 0;
 }
 
 /* DataTable overall styling */
@@ -16,7 +75,7 @@ h1 {
     border-collapse: collapse;
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 85%
+    width: 100%
 } 
 
 /* Table header */
@@ -28,6 +87,7 @@ h1 {
 /* Header cell styling */
 #clockTable th {
     border: 1px solid #dee2e6;
+    text-align: left;
 }
 
 /* Body cell styling */
@@ -39,6 +99,11 @@ h1 {
 #clockTable tbody tr:hover {
     background-color: #e9ecef;
     cursor: pointer;
+}
+
+/* Target the DataTables wrapper to create space around the controls */
+#clockTable_wrapper {
+    margin: 30px 80px; /* Add margin to create space */
 }
 
 /* Hyperlinks */
@@ -86,7 +151,6 @@ a:visited {
 /* indvTable styling */
 #indvTable {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 85%
 }
 #indvTable td, #indvTable th {
     border: 1px solid #ddd;
@@ -101,6 +165,7 @@ a:visited {
 .dataTables_wrapper {
     font-size: 0.9rem;
 } */
+ 
 
 /* Pagination buttons - not used
 .dataTables_paginate .paginate_button {

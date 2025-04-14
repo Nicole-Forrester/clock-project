@@ -1,25 +1,29 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en-GB">
     <head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- load CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <!-- Required meta tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- load CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-    <title>{{ clock_name }} Clock Information</title>
-
-    <div class="container-fluid text-center">
-        <a href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" width="8%">
-        </a>
-        <img align="right" src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" width="17%">
-      </div>
-    
-    <h1 style="text-align: center;">{{ clock_name }} Clock</h1>
+        <title>{{ clock_name }} Clock Information</title>
     </head>
     <body>
+        <div class="header-bar">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
+            </a>
+            <h1 class="header-title">{{ clock_name }} Clock</h1>
+            <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
+        </div>
+        
+        <div class="topnav">
+            <a class="../" href="/">Home</a>
+            <a href="../runclocks">Run Clocks</a>
+        </div>
+
         <div>
             <table id="indvTable" style="border-collapse: collapse; margin: 50px auto">
                 <tr>

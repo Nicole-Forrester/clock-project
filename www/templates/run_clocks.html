@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en-GB">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- load CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+        <title>Run Clocks</title>
+    </head>
+    <body>
+        <div class="header-bar">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
+            </a>
+            <h1 class="header-title">Run Clocks</h1>
+            <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
+        </div>
+
+        <div class="topnav">
+            <a href="/">Home</a>
+            <a class = active href="runclocks">Run Clocks</a>
+        </div>
+    </body>
+</html>

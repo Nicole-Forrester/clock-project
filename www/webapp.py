@@ -52,6 +52,9 @@ def clock_page(clock_name):
   
   return render_template("clock_page.html", clock_name=clock_name, clock=clock)
 
+@app.route("/runclocks")
+def run_clocks():
+    return render_template("run_clocks.html")
 
 # Don't need now but might need later
 def get_form():
