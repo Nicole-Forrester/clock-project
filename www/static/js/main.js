@@ -1,6 +1,9 @@
 $( document ).ready(function() {
     $('#clockTable').DataTable( {
-        ajax: '/data', // Fetch data from Flask
+        ajax: {
+            url: '/data',
+            dataSrc: 'clocks'
+        }, // Fetch data from Flask
         responsive: true, // Make the table responsive
         columns: [
             { data: 'clock' },
@@ -43,8 +46,8 @@ $( document ).ready(function() {
             { width: "16%", "targets": 0 },  // Clock name column
             { width: "16%", "targets": 1 },  // Paper column
             { width: "8%", "targets": 2 }, // Num CpGs column
-            { width: "15%", "targets": 3 },  // Species column
-            { width: "23%", "targets": 4 },  // Tissues column
+            { width: "16%", "targets": 3 },  // Species column
+            { width: "22%", "targets": 4 },  // Tissues column
             { width: "20%", "targets": 5 },  // Data type column
 
         ],

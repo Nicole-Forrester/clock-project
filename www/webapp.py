@@ -31,30 +31,49 @@ def connect_to_database(conf):
     global clocks
     clocks = db.clocks_collection
 
+    global cpgs
+    cpgs = db.cpgs_collection
+
 @app.route("/data", methods=["GET"])
 def get_data():
     # Fetch all records from MongoDB
     clock_data = clocks.find({}, {"_id": 0})
+    cpg_data = list(cpgs.find({}, {"_id": 0}))
 
-    # Convert Mongo cursor to list of dictionaries and handle None values
-    clean_data = []
+    # Convert Clock Mongo cursor to list of dictionaries and handle None values
+    clean_clock_data = []
     for item in clock_data:
-        clean_item = {key: ("" if value is None else value) for key, value in item.items()}
-        clean_data.append(clean_item)
+        clean_clock_item = {key: ("" if value is None else value) for key, value in item.items()}
+        clean_clock_data.append(clean_clock_item)
+
+    # Convert CpG Mongo cursor to list of dictionaries and handle None values
+    clean_cpg_data = []
+    for item in cpg_data:
+        clean_cpg_item = {key: ("" if value is None else value) for key, value in item.items()}
+        clean_cpg_data.append(clean_cpg_item)
 
     # Return the data in a format DataTables expects
-    return jsonify({"data": clean_data})
+    return jsonify({"clocks": clean_clock_data,
+                    "cpgs": clean_cpg_data})
 
+
+# Individual clock pages
 @app.route("/clock/<clock_name>")
 def clock_page(clock_name):
   # Find the specific clock in MongoDB
   clock = clocks.find_one({"clock": clock_name}, {"_id": 0})
-  
-  return render_template("clock_page.html", clock_name=clock_name, clock=clock)
 
+  # Find all CpGs related to this clock
+  cpg_list = list(cpgs.find({"clock": clock_name}, {"_id": 0}))
+  
+  return render_template("clock_page.html", clock_name=clock_name, clock=clock, cpgs=cpg_list)
+
+
+# Run clocks page
 @app.route("/runclocks")
 def run_clocks():
     return render_template("run_clocks.html")
+
 
 # Don't need now but might need later
 def get_form():

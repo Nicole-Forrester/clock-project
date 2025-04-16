@@ -43,15 +43,22 @@ def main():
     global clocks
     clocks = db.clocks_collection
 
+    # Create a collection for the CpGs called "cpgs"
+    global cpgs
+    cpgs = db.cpgs_collection
+
     # Remove everything so we're starting fresh
     clocks.delete_many({})
+    cpgs.delete_many({})
 
     # Add a test document into the collection
     # clocks.insert_one({ "name": "Hannum"})
+    # cpgs.insert_one({ "clock" : "Hannum"})
 
     # Using the parse_data function above, put all records into mongodb
     db = client["clocks_database"]
     db.clocks_collection.insert_many(parse_data("data/epigenetic_clocks.csv"))
+    db.cpgs_collection.insert_many(parse_data("data/clock_cpgs.csv"))
 
 if __name__ == "__main__":
     main()
