@@ -57,8 +57,8 @@ def main():
 
     # Using the parse_data function above, put all records into mongodb
     db = client["clocks_database"]
-    db.clocks_collection.insert_many(parse_data("data/epigenetic_clocks.csv"))
-    db.cpgs_collection.insert_many(parse_data("data/clock_cpgs.csv"))
+    db.clocks_collection.insert_many(parse_data("data/clocks_with_stats.csv"))
+    db.cpgs_collection.insert_many(parse_data("data/updated_clock_cpgs.csv"))
 
 if __name__ == "__main__":
     main()

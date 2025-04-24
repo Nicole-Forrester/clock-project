@@ -67,24 +67,32 @@
                     {% endif %}
                 </tr>
                 <tr>
-                    <th>CpGs in CpG islands</th>
-                    <td>%</td>
+                    <th>CpGs in Islands</th>
+                    <td>{{ clock.island_cpgs | int }}</td>
+                </tr>
+                <tr>
+                    <th>CpGs in Shores</th>
+                    <td>{{ clock.shore_cpgs | int }}</td>
+                </tr>
+                <tr>
+                    <th>CpGs in Shelves</th>
+                    <td>{{ clock.shelf_cpgs | int }}</td>
                 </tr>
                 <tr>
                     <th>CpGs in Genes</th>
-                    <td>%</td>
+                    <td>{{ clock.gene_cpgs | int }}</td>
                 </tr>
                 <tr>
-                    <th>CpGs in Exons</th>
-                    <td>%</td>
+                    <th>CpGs in First Exon</th>
+                    <td>{{ clock.firstexon_cpgs | int }}</td>
                 </tr>
                 <tr>
                     <th>CpGs in Introns</th>
-                    <td>%</td>
+                    <td>{{ clock.intron_cpgs | int }}</td>
                 </tr>
                 <tr>
                     <th>CpGs in Promoters</th>
-                    <td>%</td>
+                    <td>{{ clock.promoter_cpgs | int }}</td>
                 </tr>
                 <tr>
                     <th>CpGs File</th>
@@ -96,7 +104,7 @@
             <h2>{{ clock_name }} CpGs</h2>
                 <ul>
                     {% for cpg in cpgs %}
-                        <li>{{ cpg['cpg_id'] }} : {{ cpg['weight'] }}</li>
+                        <li>{{ cpg.cpg_id }} : {{ cpg.weight }}</li>
                     {% endfor %}
                 </ul>
         </div>
