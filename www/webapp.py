@@ -5,12 +5,14 @@
 #   request - used to interact with APIs, to access incoming request data
 #   render_template - enables the reference and use of external HTML code or scripts
 #   make_response - sets additional headers in a view
-from flask import Flask, request, render_template, make_response, jsonify
+from flask import Flask, request, render_template, make_response, jsonify, Response
 from pymongo import MongoClient
 from pathlib import Path
 import json
 import numpy as np
 from collections import OrderedDict
+import csv
+import io
 
 # Create instance of Flask class, assign to app
 app = Flask(__name__)
@@ -107,6 +109,32 @@ def clock_page(clock_name):
                          cpgs=cpg_list,
                          annotation_data=annotation_data,
                          island_data=island_data)
+
+# Download link for CpGs per clock on indv clock page
+@app.route("/clock/<clock_name>/download_cpgs")
+def download_cpgs(clock_name):
+    # Get CpGs for the clock
+    cpg_list = list(cpgs.find({"clock": clock_name}, {"_id": 0}))
+
+    # If empty, return 404
+    if not cpg_list:
+        return f"No CpGs found for clock '{clock_name}'", 404
+
+    # Create CSV in memory
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=cpg_list[0].keys())
+    writer.writeheader()
+    writer.writerows(cpg_list)
+    output.seek(0)
+
+    # Create response
+    return Response(
+        output,
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": f"attachment;filename={clock_name} CpGs.csv"
+        }
+    )
 
 
 # Run clocks page
