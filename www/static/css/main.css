@@ -162,6 +162,21 @@ a:visited {
     width: 20%;
 }
 
+/* CpG charts styling to make charts sit side-by-side on desktop and stack vertically on phones */
+.charts-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin: 40px auto;
+    max-width: 1000px;
+}
+
+.chart-container {
+    flex: 1 1 300px;
+    max-width: 350px;
+}
+
 /* Pagination, Search box, and Info text - not used
 .dataTables_wrapper {
     font-size: 0.9rem;

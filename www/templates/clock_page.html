@@ -67,59 +67,103 @@
                     {% endif %}
                 </tr>
                 <tr>
-                    <th>CpGs in Islands</th>
-                    <td>{{ clock.island_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in Shores</th>
-                    <td>{{ clock.shore_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in Shelves</th>
-                    <td>{{ clock.shelf_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in Genes</th>
-                    <td>{{ clock.gene_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in First Exon</th>
-                    <td>{{ clock.firstexon_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in Introns</th>
-                    <td>{{ clock.intron_cpgs | int }}</td>
-                </tr>
-                <tr>
-                    <th>CpGs in Promoters</th>
-                    <td>{{ clock.promoter_cpgs | int }}</td>
-                </tr>
-                <tr>
                     <th>CpGs File</th>
                     <td>[Download link]</td>
                 </tr>
             </table>
         </div>
-        <div>
-            <h2>{{ clock_name }} CpGs</h2>
-                <ul>
-                    {% for cpg in cpgs %}
-                        <li>{{ cpg.cpg_id }} : {{ cpg.weight }}</li>
-                    {% endfor %}
-                </ul>
+
+        {% if island_data or annotation_data %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <div class="charts-wrapper">
+            {% if island_data %}
+            <div class="chart-container">
+                <h3 style="text-align:center">CpGs by Island Context</h3>
+                <canvas id="islandChart"></canvas>
+            </div>
+            {% endif %}
+
+            {% if annotation_data %}
+            <div class="chart-container">
+                <h3 style="text-align:center">CpGs by Annotation Type</h3>
+                <canvas id="annotationChart"></canvas>
+            </div>
+            {% endif %}
         </div>
-        <!-- <div>
-            <p><strong>Clock Name:</strong> {{ clock.clock }}</p>
-            <p><strong>Paper:</strong> <a href="{{ clock.url }}">{{ clock.paper }}</a></p>
-            <p><strong>Data Type:</strong> {{ clock.training_data_type }}</p>
-            <p><strong>Species:</strong> {{ clock.species }}</p>
-            <p><strong>Tissue(s) used in training:</strong> {{ clock.training_tissue }}</p>
-            <p><strong>Age range (training):</strong> {{ clock.training_age_range }}</p>
-            <p><strong>Number of CpGs:</strong> {{ clock.num_cpgs }}</p>
-            <p><strong>Genome Build:</strong> {{ clock.genome_build }}</p>
-            <p><strong>Language:</strong> {{ clock.language }}</p>
-            <p><strong>Code:</strong> <a href="{{ clock.code }}">{{ clock.code }}></a></p>
-        </div> -->
+
+        <script>
+        {% if island_data %}
+        const islandChart = new Chart("islandChart", {
+            type: "doughnut",
+            data: {
+                labels: {{ island_data.keys()|list|tojson }},
+                datasets: [{
+                    label: "Island Context",
+                    data: {{ island_data.values()|list|tojson }},
+                    backgroundColor: ['#1f78b4', '#33a02c', '#e31a1c', '#ff7f00'],
+                    hoverOffset: 20
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.raw || 0;
+                                let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                let percent = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+        {% if annotation_data %}
+        const annotationChart = new Chart("annotationChart", {
+            type: "doughnut",
+            data: {
+                labels: {{ annotation_data.keys()|list|tojson }},
+                datasets: [{
+                    label: "Annotation Types",
+                    data: {{ annotation_data.values()|list|tojson }},
+                    backgroundColor: [
+                        '#6a3d9a', '#b15928', '#a6cee3', '#fb9a99',
+                        '#fdbf6f', '#cab2d6', '#ffff99', '#1f78b4',
+                        '#33a02c', '#e31a1c', '#ff7f00', '#b2df8a',
+                        '#8dd3c7'
+                    ],
+                    hoverOffset: 20
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.raw || 0;
+                                let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                let percent = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percent}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        {% endif %}
+        </script>
+        {% endif %}
+
         <p style="margin-left: 7.5%">
             <a href="{{ url_for('index') }}">Back to Clock Database</a>
         </p>

@@ -10,6 +10,7 @@ from pymongo import MongoClient
 from pathlib import Path
 import json
 import numpy as np
+from collections import OrderedDict
 
 # Create instance of Flask class, assign to app
 app = Flask(__name__)
@@ -65,8 +66,47 @@ def clock_page(clock_name):
 
   # Find all CpGs related to this clock
   cpg_list = list(cpgs.find({"clock": clock_name}, {"_id": 0}))
+
+  # Readable labels for chart display
+  annotation_labels = OrderedDict([
+      ('kb1to5_cpgs', '1 to 5 kb'),
+      ('firstexon_cpgs', 'First Exon'),
+      ('utr3_cpgs', "3' UTR"),
+      ('utr5_cpgs', "5' UTR"),
+      ('body_cpgs', 'Gene Body'),
+      ('cds_cpgs', 'CDS'),
+      ('exon_cpgs', 'Exon'),
+      ('igr_cpgs', 'Intergenic Region'),
+      ('intron_cpgs', 'Intron'),
+      ('promoter_cpgs', 'Promoter'),
+      ('gene_cpgs', 'Gene'),
+      ('tss1500_cpgs', 'TSS1500'),
+      ('tss200_cpgs', 'TSS200'),
+      ('no_ucsc_annotation_cpgs', 'No UCSC Annotation')
+      ])
+  island_labels = OrderedDict([
+      ('island_cpgs', 'Island'),
+      ('shore_cpgs', 'Shore'),
+      ('shelf_cpgs', 'Shelf'),
+      ('no_island_info_cpgs', 'No Island Info')
+      ])
   
-  return render_template("clock_page.html", clock_name=clock_name, clock=clock, cpgs=cpg_list)
+  # Extract only non-zero values for the charts using dictionary comprehension
+  annotation_data = {
+      annotation_labels[k]: (clock.get(k) or 0)
+      for k in annotation_labels if (clock.get(k) or 0) > 0
+      }
+  island_data = {
+      island_labels[k]: (clock.get(k) or 0)
+      for k in island_labels if (clock.get(k) or 0) > 0
+      }
+  
+  return render_template("clock_page.html",
+                         clock_name=clock_name,
+                         clock=clock,
+                         cpgs=cpg_list,
+                         annotation_data=annotation_data,
+                         island_data=island_data)
 
 
 # Run clocks page
