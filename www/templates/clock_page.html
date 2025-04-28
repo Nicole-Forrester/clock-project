@@ -68,7 +68,11 @@
                 </tr>
                 <tr>
                     <th>CpGs File</th>
+                    {% if cpgs %}
                     <td><a href="{{ url_for('download_cpgs', clock_name=clock_name) }}">Download CpGs Data</a></td>
+                    {% else %}
+                    <td>Not available</td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
