@@ -162,7 +162,7 @@ def download_cpgs(clock_name):
 def run_clocks():
     if request.method == "POST": # If user uploaded a file
         file = request.files["betas_file"] # The uploaded file
-        clock_name = request.form["clock_name"] # The clock name selected
+        selected_clocks = request.form.getlist("clock_name") # The list of clock name(s) selected
 
         try:
             # Load CSV as pandas DataFrame
@@ -176,25 +176,40 @@ def run_clocks():
                 # Get available clocks from the R package
                 avail_clocks = dnamethyage.availableClock()  # Call directly as a function
 
-                # Check if the clock is available - shouldn't be needed because of dropdown but keeping in anyway
-                if clock_name not in avail_clocks:
-                    flash(f"{clock_name} Clock is not available.")
-                    return redirect(request.url)
+                # Check if all selected clocks are available - shouldn't be needed because of options in list but keeping in anyway
+                for clock_name in selected_clocks:
+                    if clock_name not in avail_clocks:
+                        flash(f"{clock_name} Clock is not available.")
+                        return redirect(request.url)
 
-                # Run the DNA methylation age calculation
-                dnam_age_r = dnamethyage.methyAge(betas_r, clock=clock_name)
+                # Initialize a dictionary to store results for all selected clocks
+                all_results = {}
 
-            # Convert R data.frame to pandas DataFrame
-            with localconverter(pandas2ri.converter):
-                dnam_age_df = pandas2ri.rpy2py(dnam_age_r)
+                # Loop through each selected clock and run methyAge
+                for clock_name in selected_clocks:
+                    # Run the DNA methylation age calculation for each clock
+                    dnam_age_r = dnamethyage.methyAge(betas_r, clock=clock_name)
 
-            # Now extract sample-age pairs
-            full_results = list(dnam_age_df.itertuples(index=False, name=None))
+                    # Convert R data.frame to pandas DataFrame
+                    with localconverter(pandas2ri.converter):
+                        dnam_age_df = pandas2ri.rpy2py(dnam_age_r)
+
+                    # Extract sample-age pairs and add them to the results list
+                    for index, row in dnam_age_df.iterrows():
+                        sample = row.iloc[0]  # Sample ID
+                        age = row.iloc[1]     # Predicted age
+                        if sample not in all_results:
+                            all_results[sample] = {}
+                        all_results[sample][clock_name] = age
+
+            # Sort samples for consistency
+            sorted_samples = sorted(all_results.items())
 
             # Render results page
             return render_template("run_clocks.html",
-                                   clock_name=clock_name,
-                                   full_results=full_results)
+                                   selected_clocks=selected_clocks,
+                                   all_results=sorted_samples)
+        
         # Error handling
         except Exception as e:
             flash(f"Error: {str(e)}")

@@ -30,9 +30,9 @@
 
             <!-- Upload form for running clocks -->
             <div>
-                <form method="POST" enctype="multipart/form-data" class="clock-form">
+                <form method="POST" enctype="multipart/form-data" class="clock-form">                    
                     <label for="clock_name">Choose Clock:</label>
-                    <select name="clock_name" required>
+                    <select name="clock_name" id="clock_name" multiple required>
                         <option value="" disabled selected>Select a clock</option>
                         <option value="HorvathS2013">Horvath</option>
                         <option value="HannumG2013">Hannum</option>
@@ -43,11 +43,11 @@
                         <option value="DunedinPACE">DunedinPACE</option>
                         <!-- Add more options as needed -->
                     </select>
-
+                    
                     <label for="betas_file">Upload Betas File (CSV):</label>
                     <input type="file" name="betas_file" accept=".csv" required>
 
-                    <button type="submit">Run Clock</button>
+                    <button type="submit">Run</button>
                 </form>
 
                 <!-- Progress spinner -->
@@ -60,11 +60,44 @@
                           <div class="tick" style="--i: {{ i }}"></div> <!-- Sets the CSS var --i to the for loop iterator -->
                         {% endfor %}
                     </div>
-                    <p>Running clock...</p>
+                    <p>Running...</p>
                 </div>
 
                 <!-- Running clocks results -->
-                {% if full_results %}
+                {% if all_results %}
+                <section class="results-table">
+                    <h2>DNAm Age Results:</h2>
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Sample</th>
+                                {% for clock_name in selected_clocks %}
+                                <th>{{ clock_name }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sample, ages in all_results %}
+                            <tr>
+                                <td>{{ sample }}</td>
+                                {% for clock_name in selected_clocks %}
+                                <td>
+                                    {% if clock_name in ages %}
+                                        {{ '%0.2f'|format(ages[clock_name] | float) }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                {% endif %}
+
+                
+                <!-- {% if full_results %}
                     <section class="results-table">
                         <h2>{{ clock_name }} DNAm Age Results:</h2>
                         <table id="resultsTable">
@@ -76,7 +109,7 @@
                             {% endfor %}
                         </table>
                     </section>
-                {% endif %}
+                {% endif %} -->
                 
                 <!-- Error handling -->
                 {% with messages = get_flashed_messages() %}
