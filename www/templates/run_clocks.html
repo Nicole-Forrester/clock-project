@@ -11,6 +11,7 @@
         <title>Run Clocks</title>
     </head>
     <body>
+        <!-- Header -->
         <div class="header-bar">
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
@@ -19,9 +20,52 @@
             <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
         </div>
 
+        <!-- Nav bar -->
         <div class="topnav">
             <a href="/">Home</a>
-            <a class = active href="runclocks">Run Clocks</a>
+            <a class = active href="run_clocks">Run Clocks</a>
+        </div>
+
+        <!-- Upload form for running clocks -->
+        <div>
+            <form method="POST" enctype="multipart/form-data">
+                <label for="clock_name">Choose Clock:</label>
+                <select name="clock_name" required>
+                    <option value="HorvathS2013">Horvath</option>
+                    <option value="HannumG2013">Hannum</option>
+                    <option value="HorvathS2018">SkinBlood</option>
+                    <option value="LevineM2018">PhenoAge</option>
+                    <option value="YangZ2016">epiTOC</option>
+                    <option value="epiTOC2">epiTOC2</option>
+                    <option value="DunedinPACE">DunedinPACE</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <input type="file" name="betas_file" accept=".csv" required>
+                <button type="submit">Run Clock</button>
+            </form>
+            
+            {% if full_results %}
+                <h2>DNAm Age Results:</h2>
+                <table id="resultsTable" style="border-collapse: collapse; margin: 50px auto">
+                    {% for sample, age in full_results %}
+                    <tr>
+                        <th>{{ sample }}</th>
+                        <td>{{ age }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            
+            <!-- Error handling -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul>
+                {% for msg in messages %}
+                  <li style="color: red;">{{ msg }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
         </div>
     </body>
 </html>

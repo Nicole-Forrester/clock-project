@@ -4,18 +4,38 @@
 #   Flask - a class, used to create a Flask instance
 #   request - used to interact with APIs, to access incoming request data
 #   render_template - enables the reference and use of external HTML code or scripts
-#   make_response - sets additional headers in a view
-from flask import Flask, request, render_template, make_response, jsonify, Response
+#   jsonify - converts Python dictionaries or lists into a JSON response
+#   Response - manually constructs a Flask HTTP response, allows for returning a downloadable csv file
+#   redired - sends the user to a different route (HTTP redirect)
+#   flash - stores short message to be displayed to user on next page load (e.g. error/success notifications), requires app.secret_key
+from flask import Flask, request, render_template, jsonify, Response, redirect, flash
 from pymongo import MongoClient
 from pathlib import Path
 import json
-import numpy as np
+import pandas as pd
 from collections import OrderedDict
 import csv
 import io
 
+# ---- R Imports and Wrapper Function ----
+from rpy2.robjects.packages import importr
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+from rpy2.rinterface_lib import openrlib
+
+
+# Activate R <-> pandas conversion
+pandas2ri.activate()
+
+# Import R packages
+base = importr("base")
+dnamethyage = importr("dnaMethyAge")
+
+
 # Create instance of Flask class, assign to app
 app = Flask(__name__)
+app.secret_key = "your_secret_key"  # Needed for flashing messages
+
 
 @app.route("/")
 def index():
@@ -71,26 +91,26 @@ def clock_page(clock_name):
 
   # Readable labels for chart display
   annotation_labels = OrderedDict([
-      ('kb1to5_cpgs', '1 to 5 kb'),
-      ('firstexon_cpgs', 'First Exon'),
-      ('utr3_cpgs', "3' UTR"),
-      ('utr5_cpgs', "5' UTR"),
-      ('body_cpgs', 'Gene Body'),
-      ('cds_cpgs', 'CDS'),
-      ('exon_cpgs', 'Exon'),
-      ('igr_cpgs', 'Intergenic Region'),
-      ('intron_cpgs', 'Intron'),
-      ('promoter_cpgs', 'Promoter'),
-      ('gene_cpgs', 'Gene'),
-      ('tss1500_cpgs', 'TSS1500'),
-      ('tss200_cpgs', 'TSS200'),
-      ('no_ucsc_annotation_cpgs', 'No UCSC Annotation')
+      ("kb1to5_cpgs", "1 to 5 kb"),
+      ("firstexon_cpgs", "First Exon"),
+      ("utr3_cpgs", "3' UTR"),
+      ("utr5_cpgs", "5' UTR"),
+      ("body_cpgs", "Gene Body"),
+      ("cds_cpgs", "CDS"),
+      ("exon_cpgs", "Exon"),
+      ("igr_cpgs", "Intergenic Region"),
+      ("intron_cpgs", "Intron"),
+      ("promoter_cpgs", "Promoter"),
+      ("gene_cpgs", "Gene"),
+      ("tss1500_cpgs", "TSS1500"),
+      ("tss200_cpgs", "TSS200"),
+      ("no_ucsc_annotation_cpgs", "No UCSC Annotation")
       ])
   island_labels = OrderedDict([
-      ('island_cpgs', 'Island'),
-      ('shore_cpgs', 'Shore'),
-      ('shelf_cpgs', 'Shelf'),
-      ('no_island_info_cpgs', 'No Island Info')
+      ("island_cpgs", "Island"),
+      ("shore_cpgs", "Shore"),
+      ("shelf_cpgs", "Shelf"),
+      ("no_island_info_cpgs", "No Island Info")
       ])
   
   # Extract only non-zero values for the charts using dictionary comprehension
@@ -138,8 +158,49 @@ def download_cpgs(clock_name):
 
 
 # Run clocks page
-@app.route("/runclocks")
+@app.route("/run_clocks", methods=["GET", "POST"])
 def run_clocks():
+    if request.method == "POST": # If user uploaded a file
+        file = request.files["betas_file"] # The uploaded file
+        clock_name = request.form["clock_name"] # The clock name selected
+
+        try:
+            # Load CSV as pandas DataFrame
+            betas_df = pd.read_csv(file, index_col=0) # Reads file into pd df with first column used as the row names
+            
+            # Convert pandas DataFrame to R data.frame
+            with openrlib.rlock: # Ensures thread-safe access to the R interpreter
+                with localconverter(pandas2ri.converter):
+                    betas_r = pandas2ri.py2rpy(betas_df)
+
+                # Get available clocks from the R package
+                avail_clocks = dnamethyage.availableClock()  # Call directly as a function
+
+                # Check if the clock is available - shouldn't be needed because of dropdown but keeping in anyway
+                if clock_name not in avail_clocks:
+                    flash(f"{clock_name} Clock is not available.")
+                    return redirect(request.url)
+
+                # Run the DNA methylation age calculation
+                dnam_age_r = dnamethyage.methyAge(betas_r, clock=clock_name)
+
+            # Convert R data.frame to pandas DataFrame
+            with localconverter(pandas2ri.converter):
+                dnam_age_df = pandas2ri.rpy2py(dnam_age_r)
+
+            # Now extract sample-age pairs
+            full_results = list(dnam_age_df.itertuples(index=False, name=None))
+
+            # Render results page
+            return render_template("run_clocks.html",
+                                   clock_name=clock_name,
+                                   full_results=full_results)
+        # Error handling
+        except Exception as e:
+            flash(f"Error: {str(e)}")
+            return redirect(request.url)
+
+    # If page was just accessed via GET, not POST, just show upload page
     return render_template("run_clocks.html")
 
 
@@ -168,3 +229,7 @@ server_conf = get_server_configuration()
 
 # Connect to the database
 connect_to_database(server_conf)
+
+
+if __name__ == "__main__":
+    app.run(debug=True, use_reloader=False, threaded=False)

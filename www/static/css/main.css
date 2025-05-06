@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif; /* Apply a custom font */
+    font-family: "Arial", sans-serif; /* Apply a custom font */
     background-color: #f8f9fa;
     color: #212529;
     margin: 0px; /* To avoid navbar from having a gap on the left */
@@ -159,6 +159,20 @@ a:visited {
     text-align: left;
 }
 #indvTable th {
+    width: 20%;
+}
+
+/* indvTable styling */
+#resultsTable {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+}
+#resultsTable td, #resultsTable th {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+}
+#resultsTable th {
     width: 20%;
 }
 

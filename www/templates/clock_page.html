@@ -11,6 +11,7 @@
         <title>{{ clock_name }} Clock Information</title>
     </head>
     <body>
+        <!-- Header -->
         <div class="header-bar">
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
@@ -19,11 +20,13 @@
             <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
         </div>
         
+        <!-- Nav bar -->
         <div class="topnav">
             <a class="../" href="/">Home</a>
-            <a href="../runclocks">Run Clocks</a>
+            <a href="../run_clocks">Run Clocks</a>
         </div>
 
+         <!-- Clock info table -->
         <div>
             <table id="indvTable" style="border-collapse: collapse; margin: 50px auto">
                 <tr>
@@ -77,6 +80,7 @@
             </table>
         </div>
 
+        <!-- CpG charts -->
         {% if island_data or annotation_data %}
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -105,18 +109,18 @@
                 datasets: [{
                     label: "Island Context",
                     data: {{ island_data.values()|list|tojson }},
-                    backgroundColor: ['#1f78b4', '#33a02c', '#e31a1c', '#ff7f00'],
+                    backgroundColor: ["#1f78b4", "#33a02c", "#e31a1c", "#ff7f00"],
                     hoverOffset: 20
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom' },
+                    legend: { position: "bottom" },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                let label = context.label || '';
+                                let label = context.label || "";
                                 let value = context.raw || 0;
                                 let total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 let percent = ((value / total) * 100).toFixed(1);
@@ -138,10 +142,10 @@
                     label: "Annotation Types",
                     data: {{ annotation_data.values()|list|tojson }},
                     backgroundColor: [
-                        '#6a3d9a', '#b15928', '#a6cee3', '#fb9a99',
-                        '#fdbf6f', '#cab2d6', '#ffff99', '#1f78b4',
-                        '#33a02c', '#e31a1c', '#ff7f00', '#b2df8a',
-                        '#8dd3c7'
+                        "#6a3d9a", "#b15928", "#a6cee3", "#fb9a99",
+                        "#fdbf6f", "#cab2d6", "#ffff99", "#1f78b4",
+                        "#33a02c", "#e31a1c", "#ff7f00", "#b2df8a",
+                        "#8dd3c7"
                     ],
                     hoverOffset: 20
                 }]
@@ -149,11 +153,11 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom' },
+                    legend: { position: "bottom" },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                let label = context.label || '';
+                                let label = context.label || "";
                                 let value = context.raw || 0;
                                 let total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 let percent = ((value / total) * 100).toFixed(1);

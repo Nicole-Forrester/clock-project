@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en-GB">
     <head>
         <!-- Required meta tags -->
@@ -19,6 +19,7 @@
         <title>Clock Database</title>
     </head>
     <body>
+        <!-- Header -->
         <div class="header-bar">
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
@@ -27,11 +28,13 @@
             <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
         </div>
         
+        <!-- Nav bar -->
         <div class="topnav">
             <a class="active" href="/">Home</a>
-            <a href="runclocks">Run Clocks</a>
+            <a href="run_clocks">Run Clocks</a>
         </div>
-
+        
+        <!-- Table of clocks -->
         <table id="clockTable" class="display"> <!-- display is short-hand for stripe, hover, row-border and order-column classes -->
             <thead>
                 <tr>
@@ -41,16 +44,6 @@
                     <th>Species</th>
                     <th>Tissues used in training</th>
                     <th>Data type used in training</th>
-                    <!-- <th>Age range in years (training)</th>
-                    <th>Mean absolute deviance (years)</th>
-                    <th># of CpGs</th>
-                    <th>Genome build</th>
-                    <th>Method</th>
-                    <th>Got CpG locations?</th>
-                    <th>Language</th>
-                    <th>Code</th> -->
-
-                    <!-- <th>URL</th>             -->
                 </tr>
             </thead>
             <tbody></tbody>

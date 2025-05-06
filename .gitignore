@@ -7,6 +7,9 @@ data/
 # Database and user creation file
 database/create_database_and_user.txt
 
+# R history
+.Rhistory
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
