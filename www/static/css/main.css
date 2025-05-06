@@ -244,6 +244,73 @@ a:visited {
     font-weight: bold;
 }
 
+
+/* Progress spinner */
+.clock-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px auto;
+}
+.clock-face {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border: 5px solid #003366;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.tick {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background-color: black;
+    top: 0;
+    left: 49%;
+    transform: rotate(calc(30deg * var(--i) - 90deg + 2deg)) translateX(-50%);
+    transform-origin: center 40px;
+}
+.minute-hand {
+    position: absolute;
+    width: 2px;
+    height: 35%;
+    background-color: #003366;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: bottom center;
+    animation: spin 2s linear infinite;
+}
+.hour-hand {
+    position: absolute;
+    width: 2px;
+    height: 25%;
+    background-color: #003366;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: bottom center;
+    animation: spin 24s linear infinite; /* hour hand moves slower */
+}
+.clock-centre {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+@keyframes spin {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+}
+
+
 /* Pagination, Search box, and Info text - not used
 .dataTables_wrapper {
     font-size: 0.9rem;
