@@ -162,20 +162,6 @@ a:visited {
     width: 20%;
 }
 
-/* indvTable styling */
-#resultsTable {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: auto;
-}
-#resultsTable td, #resultsTable th {
-    border: 1px solid #ddd;
-    padding: 8px 10px;
-    text-align: left;
-}
-#resultsTable th {
-    width: 20%;
-}
-
 /* CpG charts styling to make charts sit side-by-side on desktop and stack vertically on phones */
 .charts-wrapper {
     display: flex;
@@ -189,6 +175,73 @@ a:visited {
 .chart-container {
     flex: 1 1 300px;
     max-width: 350px;
+}
+
+
+/* Run Clocks container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Styling for clock upload form */
+.clock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.clock-form label {
+    font-weight: bold;
+}
+.clock-form select, .clock-form input[type="file"], .clock-form button {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.clock-form button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.clock-form button:hover {
+    background-color: #00264c;
+}
+
+
+/* Styling for clock results table */
+.results-table {
+    margin: 40px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.results-table h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+#resultsTable {
+    margin: 15px auto;
+    border-collapse: collapse;
+}
+
+#resultsTable td, #resultsTable th {
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    text-align: left;
+}
+#resultsTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 }
 
 /* Pagination, Search box, and Info text - not used

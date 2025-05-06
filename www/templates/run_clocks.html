@@ -25,47 +25,57 @@
             <a href="/">Home</a>
             <a class = active href="run_clocks">Run Clocks</a>
         </div>
+        
+        <main class="container">
 
-        <!-- Upload form for running clocks -->
-        <div>
-            <form method="POST" enctype="multipart/form-data">
-                <label for="clock_name">Choose Clock:</label>
-                <select name="clock_name" required>
-                    <option value="HorvathS2013">Horvath</option>
-                    <option value="HannumG2013">Hannum</option>
-                    <option value="HorvathS2018">SkinBlood</option>
-                    <option value="LevineM2018">PhenoAge</option>
-                    <option value="YangZ2016">epiTOC</option>
-                    <option value="epiTOC2">epiTOC2</option>
-                    <option value="DunedinPACE">DunedinPACE</option>
-                    <!-- Add more options as needed -->
-                </select>
-                <input type="file" name="betas_file" accept=".csv" required>
-                <button type="submit">Run Clock</button>
-            </form>
-            
-            {% if full_results %}
-                <h2>DNAm Age Results:</h2>
-                <table id="resultsTable" style="border-collapse: collapse; margin: 50px auto">
-                    {% for sample, age in full_results %}
-                    <tr>
-                        <th>{{ sample }}</th>
-                        <td>{{ age }}</td>
-                    </tr>
+            <!-- Upload form for running clocks -->
+            <div>
+                <form method="POST" enctype="multipart/form-data" class="clock-form">
+                    <label for="clock_name">Choose Clock:</label>
+                    <select name="clock_name" required>
+                        <option value="" disabled selected>Select a clock</option>
+                        <option value="HorvathS2013">Horvath</option>
+                        <option value="HannumG2013">Hannum</option>
+                        <option value="HorvathS2018">SkinBlood</option>
+                        <option value="LevineM2018">PhenoAge</option>
+                        <option value="YangZ2016">epiTOC</option>
+                        <option value="epiTOC2">epiTOC2</option>
+                        <option value="DunedinPACE">DunedinPACE</option>
+                        <!-- Add more options as needed -->
+                    </select>
+
+                    <label for="betas_file">Upload Betas File (CSV):</label>
+                    <input type="file" name="betas_file" accept=".csv" required>
+
+                    <button type="submit">Run Clock</button>
+                </form>
+
+                <!-- Running clocks results -->
+                {% if full_results %}
+                    <section class="results-table">
+                        <h2>{{ clock_name }} DNAm Age Results:</h2>
+                        <table id="resultsTable">
+                            {% for sample, age in full_results %}
+                            <tr>
+                                <th>{{ sample }}</th>
+                                <td>{{ age }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </section>
+                {% endif %}
+                
+                <!-- Error handling -->
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                    {% for msg in messages %}
+                    <li style="color: red;">{{ msg }}</li>
                     {% endfor %}
-                </table>
-            {% endif %}
-            
-            <!-- Error handling -->
-            {% with messages = get_flashed_messages() %}
-              {% if messages %}
-                <ul>
-                {% for msg in messages %}
-                  <li style="color: red;">{{ msg }}</li>
-                {% endfor %}
-                </ul>
-              {% endif %}
-            {% endwith %}
-        </div>
+                    </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </main>
     </body>
 </html>
