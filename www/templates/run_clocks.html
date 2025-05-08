@@ -8,6 +8,13 @@
         <!-- load CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+        <!-- Include Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <!-- jQuery and Select2 JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <title>Run Clocks</title>
     </head>
     <body>
@@ -30,10 +37,10 @@
 
             <!-- Upload form for running clocks -->
             <div>
-                <form method="POST" enctype="multipart/form-data" class="clock-form">                    
-                    <label for="clock_name">Choose Clock:</label>
-                    <select name="clock_name" id="clock_name" multiple required>
-                        <option value="" disabled selected>Select a clock</option>
+                <form method="POST" enctype="multipart/form-data" class="clock-form">
+                    <label for="clock_name">Choose Clocks:</label>
+                    <select name="clock_name" id="clock_name" multiple="multiple">
+                        <option value="select_all">-- Select All --</option>
                         <option value="HorvathS2013">Horvath</option>
                         <option value="HannumG2013">Hannum</option>
                         <option value="HorvathS2018">SkinBlood</option>
@@ -41,9 +48,8 @@
                         <option value="YangZ2016">epiTOC</option>
                         <option value="epiTOC2">epiTOC2</option>
                         <option value="DunedinPACE">DunedinPACE</option>
-                        <!-- Add more options as needed -->
                     </select>
-                    
+
                     <label for="betas_file">Upload Betas File (CSV):</label>
                     <input type="file" name="betas_file" accept=".csv" required>
 
@@ -95,21 +101,6 @@
                     </table>
                 </section>
                 {% endif %}
-
-                
-                <!-- {% if full_results %}
-                    <section class="results-table">
-                        <h2>{{ clock_name }} DNAm Age Results:</h2>
-                        <table id="resultsTable">
-                            {% for sample, age in full_results %}
-                            <tr>
-                                <th>{{ sample }}</th>
-                                <td>{{ age }}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </section>
-                {% endif %} -->
                 
                 <!-- Error handling -->
                 {% with messages = get_flashed_messages() %}
