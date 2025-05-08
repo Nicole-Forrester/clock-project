@@ -32,6 +32,19 @@ base = importr("base")
 dnamethyage = importr("dnaMethyAge")
 
 
+# Map from methyAge internal names to database clock names
+methyAge_name_map = {
+    "HorvathS2013": "Horvath",
+    "HannumG2013": "Hannum",
+    "HorvathS2018": "SkinBlood",
+    "LevineM2018": "PhenoAge",
+    "YangZ2016": "epiTOC",
+    "epiTOC2": "epiTOC2",
+    "DunedinPACE": "DunedinPACE",
+    # Add others as needed
+}
+
+
 # Create instance of Flask class, assign to app
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Needed for flashing messages
@@ -164,6 +177,7 @@ def run_clocks():
         file = request.files["betas_file"] # The uploaded file
         selected_clocks = request.form.getlist("clock_name") # The list of clock name(s) selected
 
+
         try:
             # Load CSV as pandas DataFrame
             betas_df = pd.read_csv(file, index_col=0) # Reads file into pd df with first column used as the row names
@@ -208,7 +222,8 @@ def run_clocks():
             # Render results page
             return render_template("run_clocks.html",
                                    selected_clocks=selected_clocks,
-                                   all_results=sorted_samples)
+                                   all_results=sorted_samples,
+                                   methyAge_name_map=methyAge_name_map)
         
         # Error handling
         except Exception as e:

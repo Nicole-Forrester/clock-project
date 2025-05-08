@@ -78,7 +78,7 @@
                             <tr>
                                 <th>Sample</th>
                                 {% for clock_name in selected_clocks %}
-                                <th>{{ clock_name }}</th>
+                                <th>{{ methyAge_name_map.get(clock_name, clock_name) }}</th>
                                 {% endfor %}
                             </tr>
                         </thead>
