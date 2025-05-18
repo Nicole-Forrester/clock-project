@@ -16,20 +16,9 @@ import pandas as pd
 from collections import OrderedDict
 import csv
 import io
-
-# ---- R Imports and Wrapper Function ----
-from rpy2.robjects.packages import importr
-from rpy2.robjects import pandas2ri
-from rpy2.robjects.conversion import localconverter
-from rpy2.rinterface_lib import openrlib
-
-
-# Activate R <-> pandas conversion
-pandas2ri.activate()
-
-# Import R packages
-base = importr("base")
-dnamethyage = importr("dnaMethyAge")
+import os
+import random
+import subprocess
 
 
 # Map from methyAge internal names to database clock names
@@ -43,6 +32,20 @@ methyAge_name_map = {
     "DunedinPACE": "DunedinPACE",
     # Add others as needed
 }
+
+# Random ID generator
+def generate_id(size):
+    """
+    Generic function used for creating IDs.  Makes random IDs
+    just using uppercase letters
+    @size:    The length of ID to generate
+    @returns: A random ID of the requested size
+    """
+    alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    code = ""
+    for _ in range(size):
+        code += random.choice(alphanumeric)
+    return code
 
 
 # Create instance of Flask class, assign to app
@@ -174,56 +177,33 @@ def download_cpgs(clock_name):
 @app.route("/run_clocks", methods=["GET", "POST"])
 def run_clocks():
     if request.method == "POST": # If user uploaded a file
-        file = request.files["betas_file"] # The uploaded file
-        selected_clocks = request.form.getlist("clock_name") # The list of clock name(s) selected
-
-
         try:
-            # Load CSV as pandas DataFrame
-            betas_df = pd.read_csv(file, index_col=0) # Reads file into pd df with first column used as the row names
+            file = request.files["betas_file"] # The uploaded file
+            selected_clocks = request.form.getlist("clock_name") # The list of clock name(s) selected
+
+            # Generate a random ID and temporary folder for the job
+            job_id = generate_id(20)
+            job_folder = f"./data/temp/{job_id}"
+            os.makedirs(job_folder, exist_ok=True)
+
+            # Save the uploaded file into temp folder
+            csv_path = os.path.join(job_folder, "data.csv")
+            file.save(csv_path)
             
-            # Convert pandas DataFrame to R data.frame
-            with openrlib.rlock: # Ensures thread-safe access to the R interpreter
-                with localconverter(pandas2ri.converter):
-                    betas_r = pandas2ri.py2rpy(betas_df)
+            # Save clock selection to a file
+            with open(os.path.join(job_folder, "clocks.txt"), "w") as f:
+                f.write(",".join(selected_clocks))
+            
+            # Start process in background
+            subprocess.Popen(["nohup",
+                              "python3",
+                              "run_clocks.py",
+                              job_id],
+                              stdout=open(os.path.join(job_folder, "log.txt"), "w"),
+               stderr=subprocess.STDOUT)
 
-                # Get available clocks from the R package
-                avail_clocks = dnamethyage.availableClock()  # Call directly as a function
-
-                # Check if all selected clocks are available - shouldn't be needed because of options in list but keeping in anyway
-                for clock_name in selected_clocks:
-                    if clock_name not in avail_clocks:
-                        flash(f"{clock_name} Clock is not available.")
-                        return redirect(request.url)
-
-                # Initialize a dictionary to store results for all selected clocks
-                all_results = {}
-
-                # Loop through each selected clock and run methyAge
-                for clock_name in selected_clocks:
-                    # Run the DNA methylation age calculation for each clock
-                    dnam_age_r = dnamethyage.methyAge(betas_r, clock=clock_name)
-
-                    # Convert R data.frame to pandas DataFrame
-                    with localconverter(pandas2ri.converter):
-                        dnam_age_df = pandas2ri.rpy2py(dnam_age_r)
-
-                    # Extract sample-age pairs and add them to the results list
-                    for index, row in dnam_age_df.iterrows():
-                        sample = row.iloc[0]  # Sample ID
-                        age = row.iloc[1]     # Predicted age
-                        if sample not in all_results:
-                            all_results[sample] = {}
-                        all_results[sample][clock_name] = age
-
-            # Sort samples for consistency
-            sorted_samples = sorted(all_results.items())
-
-            # Render results page
-            return render_template("run_clocks.html",
-                                   selected_clocks=selected_clocks,
-                                   all_results=sorted_samples,
-                                   methyAge_name_map=methyAge_name_map)
+            # Redirect to results page
+            return redirect(f"/clock/results/{job_id}")
         
         # Error handling
         except Exception as e:
@@ -232,6 +212,41 @@ def run_clocks():
 
     # If page was just accessed via GET, not POST, just show upload page
     return render_template("run_clocks.html")
+
+# Clock results
+@app.route("/clock/results/<job_id>")
+def clock_results(job_id):
+    # Define the job folder and path to results file
+    job_folder = f"./data/temp/{job_id}"
+    results_file = os.path.join(job_folder, "results.csv")
+
+    # If results don't exist yet, return holding page with refresh
+    if not os.path.exists(results_file):
+        return render_template("holding_page.html", job_id=job_id)
+    
+    # Read selected clocks
+    clocks_path = os.path.join(job_folder, "clocks.txt")
+    selected_clocks = []
+    if os.path.exists(clocks_path):
+        with open(clocks_path, "r") as f:
+            selected_clocks = f.read().strip().split(",")
+
+    # Load results.csv into DataFrame
+    df = pd.read_csv(results_file)
+
+    # Convert to nested dictionary format expected by the template
+    # (sample, {clock: age})
+    all_results = []
+    for _, row in df.iterrows():
+        sample = row["Sample"]
+        age_data = row.drop("Sample").to_dict()
+        all_results.append((sample, age_data))
+
+    # Return results page
+    return render_template("run_clocks.html",
+                           selected_clocks=selected_clocks,
+                           all_results=all_results,
+                           methyAge_name_map=methyAge_name_map)
 
 
 # Don't need now but might need later

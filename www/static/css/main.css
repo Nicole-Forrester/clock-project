@@ -297,7 +297,7 @@ a:visited {
     left: 50%;
     transform: translateX(-50%);
     transform-origin: bottom center;
-    animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
 }
 .hour-hand {
     position: absolute;
@@ -308,7 +308,7 @@ a:visited {
     left: 50%;
     transform: translateX(-50%);
     transform-origin: bottom center;
-    animation: spin 24s linear infinite; /* hour hand moves slower */
+    animation: spin 12s linear infinite; /* hour hand moves slower */
 }
 .clock-centre {
     position: absolute;

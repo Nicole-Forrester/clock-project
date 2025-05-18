@@ -30,7 +30,7 @@
         <!-- Nav bar -->
         <div class="topnav">
             <a href="/">Home</a>
-            <a class = active href="run_clocks">Run Clocks</a>
+            <a class = active href="/run_clocks">Run Clocks</a>
         </div>
         
         <main class="container">
@@ -55,19 +55,6 @@
 
                     <button type="submit">Run</button>
                 </form>
-
-                <!-- Progress spinner -->
-                <div id="clock-spinner" class="clock-spinner" style="display: none;">
-                    <div class="clock-face">
-                        <div class="hour-hand"></div>
-                        <div class="minute-hand"></div>
-                        <div class="clock-centre"></div>
-                        {% for i in range(12) %}
-                          <div class="tick" style="--i: {{ i }}"></div> <!-- Sets the CSS var --i to the for loop iterator -->
-                        {% endfor %}
-                    </div>
-                    <p>Running...</p>
-                </div>
 
                 <!-- Running clocks results -->
                 {% if all_results %}

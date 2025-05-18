@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en-GB">
+    <head>
+        <!-- Reload the page every 12 seconds -->
+        <meta http-equiv="refresh" content="12"> 
+
+        <!-- load CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+        <title>Running Clocks...</title>
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="header-bar">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/Clock logo no background.png') }}" class="header-logo left-logo">
+            </a>
+            <h1 class="header-title">Run Clocks</h1>
+            <img src="{{ url_for('static', filename='images/bioinformatics_logo.svg') }}" class="header-logo right-logo">
+        </div>
+
+        <h2>Your DNAm age predictions are still being processed</h2>
+        <p>Please wait — this page will refresh automatically.</p>
+
+        <main class="container">
+            <!-- Progress spinner -->
+            <div id="clock-spinner" class="clock-spinner">
+                <div class="clock-face">
+                    <div class="hour-hand"></div>
+                    <div class="minute-hand"></div>
+                    <div class="clock-centre"></div>
+                    {% for i in range(12) %}
+                      <div class="tick" style="--i: {{ i }}"></div> <!-- Sets the CSS var --i to the for loop iterator -->
+                    {% endfor %}
+                </div>
+                <p>Running...</p>
+            </div>
+        </main>
+        
+        <script src="{{ url_for('static', filename='js/run_clocks.js') }}"></script>
+    </body>
+    </html>
