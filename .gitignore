@@ -1,8 +1,11 @@
 # Conf file
 configuration/conf.json
 
+# Data from previous runs of run_clocks
+www/data/
+
 # Superfluous data
-data/previous_files
+data/previous_files/
 
 # Database and user creation file
 database/create_database_and_user.txt
