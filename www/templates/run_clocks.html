@@ -86,6 +86,10 @@
                             {% endfor %}
                         </tbody>
                     </table>
+
+                    <p style="text-align: center">
+                        <a href="{{ url_for('download_results', job_id=job_id) }}" class="download-btn">Download</a>
+                    </p>
                 </section>
                 {% endif %}
                 
