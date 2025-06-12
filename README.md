@@ -78,9 +78,14 @@ python setup_database.py
 ```
 
 ### 7. Run the Flask web app:
+On the main site the clock pages are served as a subdirectory of the main site.  We therefore use
+the command below to serve on a free port and with the urls being prefixed with the directory
+under which the code is generated.  You can omit the url prefix if you want to serve from the 
+root of the domain you are using.
+
 ```bash
 cd www
-python webapp.py
+nohup waitress-serve --host 127.0.0.1 --port 6000 --url-prefix="/clockdb/" webapp:app > /dev/null &
 ```
 
 
