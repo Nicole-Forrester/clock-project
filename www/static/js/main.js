@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     $("#clockTable").DataTable( {
         ajax: {
-            url: "/data",
+            url: "data",
             dataSrc: "clocks"
         }, // Fetch data from Flask
         responsive: true, // Make the table responsive
@@ -72,7 +72,7 @@ $( document ).ready(function() {
             // Add click event to each row
             $(row).css("cursor", "pointer");  // Change cursor to pointer to indicate clickable row
             $(row).on("click", function () {
-                window.location.href = `/clock/${encodeURIComponent(data.clock)}`;
+                window.location.href = `clock/${encodeURIComponent(data.clock)}`;
             });
         }
     });

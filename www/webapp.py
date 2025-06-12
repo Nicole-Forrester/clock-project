@@ -64,7 +64,13 @@ def get_server_configuration():
     return conf
 
 def connect_to_database(conf):
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(
+        conf['server']['address'],
+        username = conf['server']['username'],
+        password = conf['server']['password'],
+        authSource = "clocks_database"
+    )    
+    
     db = client.clocks_database
 
     global clocks
