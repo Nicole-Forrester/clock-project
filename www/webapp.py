@@ -8,7 +8,7 @@
 #   Response - manually constructs a Flask HTTP response, allows for returning a downloadable csv file
 #   redired - sends the user to a different route (HTTP redirect)
 #   flash - stores short message to be displayed to user on next page load (e.g. error/success notifications), requires app.secret_key
-from flask import Flask, request, render_template, jsonify, Response, redirect, flash
+from flask import Flask, request, render_template, jsonify, Response, redirect, flash, url_for
 from pymongo import MongoClient
 from pathlib import Path
 import json
@@ -209,7 +209,7 @@ def run_clocks():
                stderr=subprocess.STDOUT)
 
             # Redirect to results page
-            return redirect(f"/clock/results/{job_id}")
+            return redirect(url_for("clock_results", job_id=job_id))
         
         # Error handling
         except Exception as e:
