@@ -260,6 +260,11 @@ a:visited {
     font-weight: bold;
 }
 
+a.active {
+    color: white;
+    font-weight: bold;
+}
+
 
 /* Progress spinner */
 .clock-spinner {
