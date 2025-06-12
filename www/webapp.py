@@ -252,7 +252,30 @@ def clock_results(job_id):
     return render_template("run_clocks.html",
                            selected_clocks=selected_clocks,
                            all_results=all_results,
-                           methyAge_name_map=methyAge_name_map)
+                           methyAge_name_map=methyAge_name_map,
+                           job_id=job_id)
+
+# Download link for clock results on run clocks page
+@app.route("/clock/results/<job_id>/download_results")
+def download_results(job_id):
+    # Get existing clock results file
+    file_path = f'./data/temp/{job_id}/results.csv'
+
+    # If doesn't exist, return 404
+    if not os.path.exists(file_path):
+        return "Results file not found", 404
+
+    def generate():
+        with open(file_path, 'r', newline='') as f:
+            yield from f
+
+    return Response(
+        generate(),
+        mimetype='text/csv',
+        headers={
+            'Content-Disposition': f'attachment; filename=results_{job_id}.csv'
+        }
+    )
 
 
 # Don't need now but might need later

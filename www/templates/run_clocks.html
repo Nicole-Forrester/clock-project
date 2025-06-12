@@ -65,7 +65,7 @@
                             <tr>
                                 <th>Sample</th>
                                 {% for clock_name in selected_clocks %}
-                                <th>{{ methyAge_name_map.get(clock_name, clock_name) }}</th>
+                                <th><a href="/clock/{{ methyAge_name_map.get(clock_name, clock_name) }}">{{ methyAge_name_map.get(clock_name, clock_name) }}</a></th>
                                 {% endfor %}
                             </tr>
                         </thead>
@@ -86,6 +86,10 @@
                             {% endfor %}
                         </tbody>
                     </table>
+
+                    <p style="text-align: center">
+                        <a href="{{ url_for('download_results', job_id=job_id) }}" class="download-btn">Download</a>
+                    </p>
                 </section>
                 {% endif %}
                 
